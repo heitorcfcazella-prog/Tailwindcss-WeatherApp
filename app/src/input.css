@@ -1,1 +1,54 @@
 @import "tailwindcss";
+
+@theme{
+  --texto-claro: #f5f5f5;
+  --texto-escuro: #1e1e1e;
+  --font-sans: "Inter", "sans-serif";
+}
+
+@layer base{
+  body{
+    @apply font-sans;
+  }
+}
+
+@layer components{
+  .justify-center{
+    @apply flex justify-center
+  }
+
+  .texto-pequeno{
+    @apply text-xs
+  }
+  .texto-medio{
+    @apply text-[16px]
+  }
+  .texto-normal{
+    @apply text-xl
+  }
+  .texto-grande{
+    @apply text-[64px]
+  }
+
+  .bg-nevando{
+    @apply bg-linear-to-b from-[#D0E3FF] to-[#8BAECF];
+  }
+  .bg-chuva-noite{
+    @apply bg-linear-to-b from-[#0C3759] to-[#145282];
+  }
+  .bg-ensolarado-erro{
+    @apply bg-linear-to-b from-[#87B8D4] to-[#00A8FF];
+  }
+  .cor-itens-claro{
+    @apply bg-[--texto-claro];
+  }
+  .cor-itens-escuro{
+    @apply bg-[--texto-escuro];
+  }
+  .card{
+    @apply opacity-40 rounded-3xl bg-[--texto-claro] shadow-xl/10 my-6
+  }
+  .mini-cards{
+    @apply opacity-20 rounded-2xl bg-[--texto-claro]
+  }
+}
