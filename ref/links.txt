@@ -1,0 +1,10 @@
+Links das telas
+
+ref1: https://dribbble.com/shots/26737353-Weather-app-concept - Organização
+
+ref2: https://dribbble.com/shots/7171214-Weather-App-UI - Fundo
+
+Sites SVG: 
+SVG Repo
+Phosphor Icons
+Lucide.dev
