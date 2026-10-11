@@ -8,26 +8,26 @@
 
 @layer base{
   body{
-    @apply font-sans;
+    @apply font-sans min-h-screen flex items-center justify-center py-6 px-8;
   }
 }
 
 @layer components{
   .justify-center{
-    @apply flex justify-center
+    @apply flex justify-center;
   }
 
   .texto-pequeno{
-    @apply text-xs
+    @apply text-xs;
   }
   .texto-medio{
-    @apply text-[16px]
+    @apply text-[16px];
   }
   .texto-normal{
-    @apply text-xl
+    @apply text-xl;
   }
   .texto-grande{
-    @apply text-[64px]
+    @apply text-[64px];
   }
 
   .bg-nevando{
@@ -46,9 +46,17 @@
     @apply bg-[--texto-escuro];
   }
   .card{
-    @apply opacity-40 rounded-3xl bg-[--texto-claro] shadow-xl/10 my-6
+    @apply opacity-60 rounded-3xl bg-[--texto-claro] shadow-xl/10 p-6 
+           grid grid-rows-3 gap-16;
+  }
+  .clima-atual{
+    @apply col-span-full;
+  }
+  .mini-cards-container{
+    @apply grid grid-cols-3 gap-3 items-center;
   }
   .mini-cards{
-    @apply opacity-20 rounded-2xl bg-[--texto-claro]
+    @apply opacity-80 rounded-2xl bg-[--texto-claro] shadow-lg p-3
+           flex flex-col items-center justify-center gap-2;
   }
 }
