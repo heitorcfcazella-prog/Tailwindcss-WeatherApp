@@ -1,14 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 @import "tailwindcss";
 
 @theme{
-  --texto-claro: #f5f5f5;
+  --texto-claro: #f5f5f5ff;
   --texto-escuro: #1e1e1e;
   --font-sans: "Inter", "sans-serif";
 }
 
 @layer base{
   body{
-    @apply font-sans min-h-screen flex items-center justify-center py-6 px-8;
+    @apply font-sans text-xl grid auto-rows-auto gap-6 py-6 px-8 justify-center;
   }
 }
 
@@ -23,11 +24,15 @@
   .texto-medio{
     @apply text-[16px];
   }
-  .texto-normal{
-    @apply text-xl;
-  }
   .texto-grande{
     @apply text-[64px];
+  }
+
+  .img-grande{
+    @apply w-60 h-60;
+  }
+  .img-pequena{
+    @apply w-16 h-16;
   }
 
   .bg-nevando{
@@ -45,18 +50,21 @@
   .cor-itens-escuro{
     @apply bg-[--texto-escuro];
   }
+  .card-pesquisa{
+    @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-2 justify-start gap-4;
+  }
   .card{
-    @apply opacity-60 rounded-3xl bg-[--texto-claro] shadow-xl/10 p-6 
-           grid grid-rows-3 gap-16;
+    @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-6 
+           grid grid-rows-3 gap-6 shadow-xl;
   }
   .clima-atual{
-    @apply col-span-full;
+    @apply grid col-span-full text-center;
   }
   .mini-cards-container{
     @apply grid grid-cols-3 gap-3 items-center;
   }
   .mini-cards{
-    @apply opacity-80 rounded-2xl bg-[--texto-claro] shadow-lg p-3
+    @apply bg-[--texto-claro] backdrop-blur-md rounded-2xl p-6 shadow-lg
            flex flex-col items-center justify-center gap-2;
   }
 }
