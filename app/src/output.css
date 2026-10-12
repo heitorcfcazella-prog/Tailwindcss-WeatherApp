@@ -210,6 +210,7 @@
     font-size: 64px;
   }
   .img-grande {
+    margin-block: calc(var(--spacing) * 8);
     height: calc(var(--spacing) * 60);
     width: calc(var(--spacing) * 60);
   }
