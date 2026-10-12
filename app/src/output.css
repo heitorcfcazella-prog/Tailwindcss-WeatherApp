@@ -187,6 +187,18 @@
     display: flex;
     justify-content: center;
   }
+  .fundo-animado {
+    pointer-events: none;
+    position: fixed;
+    inset: 0px;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .nuvem {
+    position: absolute;
+    width: calc(var(--spacing) * 37.5);
+    animation: animacao-nuvens var(--duracao) linear infinite;
+  }
   .texto-pequeno {
     font-size: var(--text-xs);
     line-height: var(--tw-leading, var(--text-xs--line-height));
@@ -240,6 +252,10 @@
   }
   .cor-itens-escuro {
     background-color: --texto-escuro;
+  }
+  .conteudo {
+    position: relative;
+    z-index: 1;
   }
   .card-pesquisa {
     justify-content: flex-start;
@@ -450,6 +466,14 @@
   syntax: "*";
   inherits: false;
   initial-value: 0 0 #0000;
+}
+@keyframes animacao-nuvens {
+  from {
+    left: var(--inicio);
+  }
+  to {
+    left: calc(100vw + 150px);
+  }
 }
 @layer properties {
   @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {

@@ -5,6 +5,16 @@
   --texto-claro: #f5f5f5ff;
   --texto-escuro: #1e1e1e;
   --font-sans: "Inter", "sans-serif";
+
+  @keyframes animacao-nuvens{
+    from {
+      left: var(--inicio);
+    }
+
+    to {
+      left: calc(100vw + 150px);
+    }
+  }
 }
 
 @layer base{
@@ -16,6 +26,13 @@
 @layer components{
   .justify-center{
     @apply flex justify-center;
+  }
+  .fundo-animado{
+    @apply fixed inset-0 overflow-hidden pointer-events-none z-0;
+  }
+  .nuvem{
+    @apply absolute w-37.5;
+    animation: animacao-nuvens var(--duracao) linear infinite;
   }
 
   .texto-pequeno{
@@ -49,6 +66,9 @@
   }
   .cor-itens-escuro{
     @apply bg-[--texto-escuro];
+  }
+  .conteudo{
+    @apply relative z-1
   }
   .card-pesquisa{
     @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-2 justify-start gap-4;
