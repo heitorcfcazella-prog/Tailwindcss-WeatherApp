@@ -176,6 +176,7 @@
     font-family: var(--font-sans);
     font-size: var(--text-xl);
     line-height: var(--tw-leading, var(--text-xl--line-height));
+    color: #1e1e1e;
   }
 }
 @layer components {
