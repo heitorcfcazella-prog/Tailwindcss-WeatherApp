@@ -73,7 +73,27 @@
     @apply relative z-1 w-full max-w-md mx-auto;
   }
   .card-pesquisa{
-    @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-2 justify-start gap-4;
+    @apply flex items-center gap-3 w-full
+          rounded-full border border-white/30
+          bg-white/25 p-1.5 backdrop-blur-md;
+  }
+  .icone-pesquisa{
+    @apply w-6 h-6 shrink-0 ml-2;
+  }
+  .input-cidade{
+    @apply min-w-0 flex-1 bg-transparent
+           outline-none text-[#1e1e1e]
+           placeholder:text-[#526b7a];
+  }
+  .botao-buscar{
+    @apply shrink-0 rounded-full bg-[#00A8FF]
+           px-5 py-2 text-[#f5f5f5] font-medium
+           transition-colors duration-200
+           hover:bg-[#00aaffec]
+           active:bg-[#00aaffd5]
+           focus-visible:outline-2
+           focus-visible:bg-[#00aaffd5]
+           cursor-pointer;
   }
   .card{
     @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-6 
