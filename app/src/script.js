@@ -47,8 +47,13 @@ function codigoClima(code){
 
       const dadosClima = await respostaClima.json();
       console.log(dadosClima);
+
       const climaAgora = dadosClima.daily.weather_code[0];
       console.log(codigoClima(climaAgora));
+
+      const agora = new Date();
+      const hora = agora.getHours();
+      console.log(hora);
 
     } catch (erro) {
       console.error(erro);
