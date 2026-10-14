@@ -1,15 +1,6 @@
 /*
-
-
 extrair as informações da API
 Popular os cards com as informações
-
-function codigoClima(code){
-	if (code >= 0 && <= 1) return clima = "Ensolarado";
-	if (code >= 2 && <= 3) return clima = "Nublado";
-	if ((code >= 51 && code <= 67) && (code >= 80 && code <= 82)) return clima = "Chovendo";
-	if (code >= 71 && code <= 77) return clima = "Nevando";
-}
 
 if (hora >= 6 && hora <= 18){
 	document.body.className = "bg-ensolarado-erro";
@@ -21,6 +12,13 @@ if (hora >= 6 && hora <= 18){
  */
 
 const iconeClima = document.getElementById("iconeClima");
+
+function codigoClima(code){
+	if (code >= 0 && code <= 1) return clima = "Céu Limpo";
+	if (code >= 2 && code <= 3) return clima = "Nublado";
+	if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return clima = "Chovendo";
+	if (code >= 71 && code <= 77) return clima = "Nevando";
+}
 
   async function buscarCidade() {
     try {
@@ -35,7 +33,7 @@ const iconeClima = document.getElementById("iconeClima");
 
       const dadosLatLog = await respostaLatLog.json();
       console.log(dadosLatLog);
-      
+
       const latitude = dadosLatLog.results[0].latitude;
       const longitude = dadosLatLog.results[0].longitude;
 
@@ -49,6 +47,8 @@ const iconeClima = document.getElementById("iconeClima");
 
       const dadosClima = await respostaClima.json();
       console.log(dadosClima);
+      const climaAgora = dadosClima.daily.weather_code[0];
+      console.log(codigoClima(climaAgora));
 
     } catch (erro) {
       console.error(erro);
