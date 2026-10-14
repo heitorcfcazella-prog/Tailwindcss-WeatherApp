@@ -2,8 +2,6 @@
 @import "tailwindcss";
 
 @theme{
-  --texto-claro: #f5f5f5;
-  --texto-escuro: #1e1e1e;
   --font-sans: "Inter", "sans-serif";
 
   @keyframes animacao-nuvens{

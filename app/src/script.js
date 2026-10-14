@@ -64,6 +64,14 @@ async function buscarCidade() {
     const pressaoAgora = Math.round(dadosClima.hourly.surface_pressure[hora]);
     console.log(pressaoAgora);
 
+    if (hora >= 6 && hora <= 18){
+      document.body.className = "bg-ensolarado-erro";
+      iconeClima.src = './assets/sun.svg';
+    } else {
+      document.body.className = "bg-chuva-noite";
+      iconeClima.src = './assets/moon.svg';
+    }
+
   } catch (erro) {
     console.error(erro);
     return null;
