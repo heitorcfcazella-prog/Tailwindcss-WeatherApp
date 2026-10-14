@@ -22,8 +22,10 @@ function codigoClima(code) {
 
 async function buscarCidade() {
   try {
-    const nomeCidade = document.getElementById("nomeCidade").value.toLowerCase();
-    const cidadeFormatada = encodeURIComponent(nomeCidade.trim());
+    const inputCidade = document.getElementById("nomeCidade").value.trim();
+
+    const nomeCidade = inputCidade || "São Paulo";
+    const cidadeFormatada = encodeURIComponent(nomeCidade);
 
     const respostaLatLog = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cidadeFormatada}&count=1&language=pt`);
 
@@ -78,6 +80,7 @@ async function buscarCidade() {
   }
 }
 document.getElementById("buscarCidade").addEventListener("click", buscarCidade);
+buscarCidade();
 
 
 
