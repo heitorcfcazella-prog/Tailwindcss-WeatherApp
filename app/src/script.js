@@ -1,5 +1,5 @@
 /*
-https://api.open-meteo.com/v1/forecast?latitude={latitude}&longitude={longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&forecast_days=1
+
 
 extrair as informações da API
 Popular os cards com as informações
@@ -27,18 +27,29 @@ const iconeClima = document.getElementById("iconeClima");
       const nomeCidade = document.getElementById("nomeCidade").value.toLowerCase();
       const cidadeFormatada = encodeURIComponent(nomeCidade.trim());
 
-      const resposta = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cidadeFormatada}&count=1&language=pt`);
+      const respostaLatLog = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${cidadeFormatada}&count=1&language=pt`);
 
-      if (!resposta.ok) {
+      if (!respostaLatLog.ok) {
         throw new Error("Erro para localizar a latitude e longitude");
       }
 
-      const dados = await resposta.json();
-      console.log(dados);
-      const latitude = dados.results[0].latitude;
-      const longitude = dados.results[0].longitude;
+      const dadosLatLog = await respostaLatLog.json();
+      console.log(dadosLatLog);
+      
+      const latitude = dadosLatLog.results[0].latitude;
+      const longitude = dadosLatLog.results[0].longitude;
 
       console.log(`Latitude: ${latitude} e Longitude: ${longitude}`);
+
+      const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&forecast_days=1`);
+
+      if(!respostaClima.ok){
+        throw new Error("Erro para extrair informações do clima");
+      }
+
+      const dadosClima = await respostaClima.json();
+      console.log(dadosClima);
+
     } catch (erro) {
       console.error(erro);
       return null;
