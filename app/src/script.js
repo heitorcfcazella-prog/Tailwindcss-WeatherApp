@@ -9,15 +9,29 @@ if (hora >= 6 && hora <= 18){
   document.body.className = "bg-chuva-noite dark";
   iconeClima.src = './assets/moon.svg';
 }
+
+
+      const proximasHoras = [(hora + 2), (hora + 4), (hora + 6)];
+
+      
+
  */
 
 const iconeClima = document.getElementById("iconeClima");
 
 function codigoClima(code) {
-  if (code >= 0 && code <= 1) return clima = "Céu Limpo";
-  if (code >= 2 && code <= 3) return clima = "Nublado";
-  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return clima = "Chovendo";
-  if (code >= 71 && code <= 77) return clima = "Nevando";
+    if (code >= 0 && code <= 1) {
+    return "Céu Limpo";
+  }
+  if ((code >= 2 && code <= 3) || code === 45 || code === 48) {
+    return "Nublado";
+  }
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82) || (code >= 95 && code <= 99)) {
+    return "Chovendo";
+  }
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) {
+    return "Nevando";
+  }
 }
 
 async function buscarCidade() {
@@ -95,7 +109,7 @@ async function buscarCidade() {
         </div>
       </div>
       <div class="mini-cards-container" id="informacoes-previstas"></div>`;
-
+    
   } catch (erro) {
     console.error(erro);
     return null;
