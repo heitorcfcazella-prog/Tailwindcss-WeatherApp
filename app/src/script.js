@@ -51,21 +51,16 @@ async function buscarCidade() {
     console.log(dadosClima);
 
     const climaAgora = dadosClima.daily.weather_code[0];
-    console.log(codigoClima(climaAgora));
 
     const agora = new Date();
     const hora = agora.getHours();
-    console.log(hora);
 
     const temperaturaAgora = Math.round(dadosClima.hourly.temperature_2m[hora]);
-    console.log(temperaturaAgora);
     const ventoAgora = Math.round(dadosClima.hourly.wind_speed_10m[hora]);
-    console.log(ventoAgora);
     const umidadeAgora = dadosClima.hourly.relative_humidity_2m[hora];
-    console.log(umidadeAgora);
     const pressaoAgora = Math.round(dadosClima.hourly.surface_pressure[hora]);
-    console.log(pressaoAgora);
 
+    // renderização no HTML
     if (hora >= 6 && hora <= 18){
       document.body.className = "bg-ensolarado-erro";
       iconeClima.src = './assets/sun.svg';
@@ -74,6 +69,33 @@ async function buscarCidade() {
       iconeClima.src = './assets/moon.svg';
     }
 
+    const containerPrincipal = document.getElementById("conteudo");
+
+    containerPrincipal.innerHTML = `
+      <div class="clima-atual">
+        <p class="texto-medio">${nomeCidade}</p>
+        <h2 class="texto-grande">${temperaturaAgora}°C</h2>
+        <p class="texto-medio">${codigoClima(climaAgora)}</p>
+      </div>
+      <div class="mini-cards-container">
+        <div class="mini-cards">
+          <img src="./assets/wind.svg" alt="Vento" class="img-pequena">
+          <p class="texto-pequeno">${ventoAgora} km/h</p>
+          <p class="texto-pequeno">Vento</p>
+        </div>
+        <div class="mini-cards">
+          <img src="./assets/gota.svg" alt="Umidade" class="img-pequena">
+          <p class="texto-pequeno">${umidadeAgora}%</p>
+          <p class="texto-pequeno">Umidade</p>
+        </div>
+        <div class="mini-cards">
+          <img src="./assets/barometer.svg" alt="Pressão" class="img-pequena">
+          <p class="texto-pequeno">${pressaoAgora} hPa</p>
+          <p class="texto-pequeno">Pressão</p>
+        </div>
+      </div>
+      <div class="mini-cards-container" id="informacoes-previstas"></div>`;
+
   } catch (erro) {
     console.error(erro);
     return null;
@@ -81,33 +103,6 @@ async function buscarCidade() {
 }
 document.getElementById("buscarCidade").addEventListener("click", buscarCidade);
 buscarCidade();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
