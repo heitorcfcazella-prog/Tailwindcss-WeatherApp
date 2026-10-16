@@ -54,6 +54,7 @@ async function buscarCidade() {
 
     const agora = new Date();
     const hora = agora.getHours();
+    //const hora = 20;
 
     const temperaturaAgora = Math.round(dadosClima.hourly.temperature_2m[hora]);
     const ventoAgora = Math.round(dadosClima.hourly.wind_speed_10m[hora]);
@@ -61,11 +62,15 @@ async function buscarCidade() {
     const pressaoAgora = Math.round(dadosClima.hourly.surface_pressure[hora]);
 
     // renderização no HTML
+    const inputTexto = document.getElementById("nomeCidade");
+
     if (hora >= 6 && hora <= 18){
       document.body.className = "bg-ensolarado-erro";
+      inputTexto.classList.remove('modo-escuro');
       iconeClima.src = './assets/sun.svg';
     } else {
       document.body.className = "bg-chuva-noite";
+      inputTexto.classList.add('modo-escuro');
       iconeClima.src = './assets/moon.svg';
     }
 

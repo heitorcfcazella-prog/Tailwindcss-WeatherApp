@@ -298,6 +298,9 @@
       color: #526b7a;
     }
   }
+  .input-cidade.modo-escuro::placeholder {
+    color: #f5f5f5;
+  }
   .botao-buscar {
     flex-shrink: 0;
     cursor: pointer;

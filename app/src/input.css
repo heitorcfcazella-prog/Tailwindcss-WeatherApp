@@ -78,11 +78,14 @@
   .icone-pesquisa{
     @apply w-6 h-6 shrink-0 ml-2;
   }
-  .input-cidade{
-    @apply min-w-0 flex-1 bg-transparent
-           outline-none text-[#1e1e1e]
-           placeholder:text-[#526b7a];
-  }
+  .input-cidade {
+  @apply min-w-0 flex-1 bg-transparent
+         outline-none text-[#1e1e1e]
+         placeholder:text-[#526b7a];
+}
+.input-cidade.modo-escuro {
+  @apply placeholder:text-[#f5f5f5];
+}
   .botao-buscar{
     @apply shrink-0 rounded-full bg-[#00A8FF]
            px-5 py-2 text-[#f5f5f5] font-medium
