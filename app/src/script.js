@@ -1,12 +1,11 @@
 /*
-extrair as informações da API
-Popular os cards com as informações
+criar animação de chuva e neve
  */
 
 const iconeClima = document.getElementById("iconeClima");
 
 function codigoClima(code) {
-    if (code >= 0 && code <= 1) {
+  if (code >= 0 && code <= 1) {
     return "Céu Limpo";
   }
   if ((code >= 2 && code <= 3) || code === 45 || code === 48) {
@@ -52,6 +51,29 @@ async function buscarCidade() {
 
     const climaAgora = dadosClima.daily.weather_code[0];
 
+    // geração das nuvens
+    let limite = 0;
+
+    if (codigoClima(climaAgora) != "Céu Limpo") {
+      limite = 8;
+    } else {
+      limite = 5
+    }
+
+    const containerNuvens = document.getElementById('fundo-nuvens');
+    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
+      nuvem.remove();
+    });
+
+    for (let i = 0; i <= limite; i++) {
+      const nuvem = document.createElement("img");
+      nuvem.src = "./assets/cloud.svg";
+      nuvem.alt = "";
+      nuvem.classList.add("nuvem");
+      animarNuvens(nuvem);
+      containerNuvens.appendChild(nuvem);
+    }
+
     const agora = new Date();
     const hora = agora.getHours();
     //const hora = 20;
@@ -64,7 +86,7 @@ async function buscarCidade() {
     // renderização no HTML
     const inputTexto = document.getElementById("nomeCidade");
 
-    if (hora >= 6 && hora <= 18){
+    if (hora >= 6 && hora <= 18) {
       document.body.className = "bg-ensolarado-erro";
       inputTexto.classList.remove('modo-escuro');
       iconeClima.src = './assets/sun.svg';
@@ -101,36 +123,36 @@ async function buscarCidade() {
       </div>
       <div class="mini-cards-container" id="informacoes-previstas"></div>`;
 
-      const proximasHoras = [hora + 2, hora + 4, hora + 6];
+    const proximasHoras = [hora + 2, hora + 4, hora + 6];
 
-      const proximosCards = proximasHoras.map(indice => {
-        indice = indice % 24;
+    const proximosCards = proximasHoras.map(indice => {
+      indice = indice % 24;
 
-        const temperatura = Math.round(
-          dadosClima.hourly.temperature_2m[indice]
-        );
+      const temperatura = Math.round(
+        dadosClima.hourly.temperature_2m[indice]
+      );
 
-        let iconeClima;
+      let iconeClima;
 
-        if (indice >= 6 && indice <= 18) {
-          iconeClima = "./assets/sun.svg";
-        } else {
-          iconeClima = "./assets/moon.svg";
-        }
+      if (indice >= 6 && indice <= 18) {
+        iconeClima = "./assets/sun.svg";
+      } else {
+        iconeClima = "./assets/moon.svg";
+      }
 
-        return `
+      return `
           <div class="mini-cards">
             <p>${indice}:00</p>
             <img src="${iconeClima}" alt="Ícone do período" class="img-pequena">
             <p>${temperatura}°C</p>
           </div>
         `;
-      });
+    });
 
-      const containerPrevisao = document.getElementById("informacoes-previstas");
+    const containerPrevisao = document.getElementById("informacoes-previstas");
 
-      containerPrevisao.innerHTML = proximosCards.join("");
-    
+    containerPrevisao.innerHTML = proximosCards.join("");
+
   } catch (erro) {
     console.error(erro);
     return null;
@@ -142,15 +164,13 @@ buscarCidade();
 
 
 //script para renderização das nuvens
-const nuvens = document.querySelectorAll(".nuvem");
-
-nuvens.forEach((nuvem) => {
+function animarNuvens(nuvem) {
   const inicio = Math.random() * 100;
   const iniciarFora = Math.random() < 0.5;
 
   const posicaoInicial = iniciarFora ? -150 : inicio;
 
-  const altura = Math.random() * 70 + 5;
+  const altura = Math.random() * 30 + 5;
   const duracao = Math.random() * 20 + 25;
 
   nuvem.style.top = `${altura}%`;
@@ -160,4 +180,4 @@ nuvens.forEach((nuvem) => {
       : `${posicaoInicial}vw`
   );
   nuvem.style.setProperty("--duracao", `${duracao}s`);
-});
+}
