@@ -41,7 +41,7 @@ async function buscarCidade() {
 
     console.log(`Latitude: ${latitude} e Longitude: ${longitude}`);
 
-    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&forecast_days=1`);
+    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&forecast_days=2`);
 
     if (!respostaClima.ok) {
       throw new Error("Erro para extrair informações do clima");
@@ -99,6 +99,7 @@ async function buscarCidade() {
       const proximasHoras = [hora + 2, hora + 4, hora + 6];
 
       const proximosCards = proximasHoras.map(indice => {
+        indice = indice % 24;
 
         const temperatura = Math.round(
           dadosClima.hourly.temperature_2m[indice]
