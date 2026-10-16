@@ -1,20 +1,6 @@
 /*
 extrair as informações da API
 Popular os cards com as informações
-
-if (hora >= 6 && hora <= 18){
-  document.body.className = "bg-ensolarado-erro";
-  iconeClima.src = './assets/sun.svg';
-} else {
-  document.body.className = "bg-chuva-noite dark";
-  iconeClima.src = './assets/moon.svg';
-}
-
-
-      const proximasHoras = [(hora + 2), (hora + 4), (hora + 6)];
-
-      
-
  */
 
 const iconeClima = document.getElementById("iconeClima");
@@ -109,6 +95,35 @@ async function buscarCidade() {
         </div>
       </div>
       <div class="mini-cards-container" id="informacoes-previstas"></div>`;
+
+      const proximasHoras = [hora + 2, hora + 4, hora + 6];
+
+      const proximosCards = proximasHoras.map(indice => {
+
+        const temperatura = Math.round(
+          dadosClima.hourly.temperature_2m[indice]
+        );
+
+        let iconeClima;
+
+        if (indice >= 6 && indice <= 18) {
+          iconeClima = "./assets/sun.svg";
+        } else {
+          iconeClima = "./assets/moon.svg";
+        }
+
+        return `
+          <div class="mini-cards">
+            <p>${indice}:00</p>
+            <img src="${iconeClima}" alt="Ícone do período" class="img-pequena">
+            <p>${temperatura}°C</p>
+          </div>
+        `;
+      });
+
+      const containerPrevisao = document.getElementById("informacoes-previstas");
+
+      containerPrevisao.innerHTML = proximosCards.join("");
     
   } catch (erro) {
     console.error(erro);
