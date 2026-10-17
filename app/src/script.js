@@ -51,29 +51,6 @@ async function buscarCidade() {
 
     const climaAgora = dadosClima.daily.weather_code[0];
 
-    // geração das nuvens
-    let limite = 0;
-
-    if (codigoClima(climaAgora) != "Céu Limpo") {
-      limite = 8;
-    } else {
-      limite = 5
-    }
-
-    const containerNuvens = document.getElementById('fundo-nuvens');
-    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
-      nuvem.remove();
-    });
-
-    for (let i = 0; i <= limite; i++) {
-      const nuvem = document.createElement("img");
-      nuvem.src = "./assets/cloud.svg";
-      nuvem.alt = "";
-      nuvem.classList.add("nuvem");
-      animarNuvens(nuvem);
-      containerNuvens.appendChild(nuvem);
-    }
-
     const agora = new Date();
     const hora = agora.getHours();
     //const hora = 20;
@@ -86,14 +63,49 @@ async function buscarCidade() {
     // renderização no HTML
     const inputTexto = document.getElementById("nomeCidade");
 
-    if (hora >= 6 && hora <= 18) {
+    // ajuste para fundo animado
+    let limite = 0;
+
+    if ((hora >= 6 && hora <= 18) && (codigoClima(climaAgora) == "Céu Limpo")) {
       document.body.className = "bg-ensolarado-erro";
       inputTexto.classList.remove('modo-escuro');
       iconeClima.src = './assets/sun.svg';
-    } else {
+      limite = 5;
+    } else if((hora <= 6 || hora >= 18) && (codigoClima(climaAgora) == "Céu Limpo"))  {
       document.body.className = "bg-chuva-noite";
       inputTexto.classList.add('modo-escuro');
       iconeClima.src = './assets/moon.svg';
+      limite = 5;
+    } else if (codigoClima(climaAgora) == "Nublado") {
+      document.body.className = "bg-chuva-noite";
+      inputTexto.classList.add('modo-escuro');
+      iconeClima.src = './assets/cloud.svg';
+      limite = 12;
+    } else if (codigoClima(climaAgora) == "Chovendo") {
+      document.body.className = "bg-chuva-noite";
+      inputTexto.classList.add('modo-escuro');
+      iconeClima.src = './assets/cloud.svg';
+      limite = 12;
+    } else if (codigoClima(climaAgora) == "Nevando") {
+      document.body.className = "bg-nevando";
+      inputTexto.classList.remove('modo-escuro');
+      iconeClima.src = './assets/snowflake.svg';
+      limite = 12;
+    }
+
+    // geração das nuvens
+    const containerNuvens = document.getElementById('fundo-nuvens');
+    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
+      nuvem.remove();
+    });
+
+    for (let i = 0; i <= limite; i++) {
+      const nuvem = document.createElement("img");
+      nuvem.src = "./assets/cloud.svg";
+      nuvem.alt = "";
+      nuvem.classList.add("nuvem");
+      animarNuvens(nuvem);
+      containerNuvens.appendChild(nuvem);
     }
 
     const containerPrincipal = document.getElementById("conteudo");
