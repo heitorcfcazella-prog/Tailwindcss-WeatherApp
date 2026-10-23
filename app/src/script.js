@@ -64,6 +64,11 @@ async function buscarCidade() {
     const inputTexto = document.getElementById("nomeCidade");
 
     // ajuste para fundo animado
+    const containerNuvens = document.getElementById('fundo-nuvens');
+    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
+      nuvem.remove();
+    });
+    
     let limite = 0;
 
     if ((hora >= 6 && hora <= 18) && (codigoClima(climaAgora) == "Céu Limpo")) {
@@ -71,35 +76,37 @@ async function buscarCidade() {
       inputTexto.classList.remove('modo-escuro');
       iconeClima.src = './assets/sun.svg';
       limite = 5;
+      precipitacao(containerNuvens, 0, "chuva");
     } else if((hora <= 6 || hora >= 18) && (codigoClima(climaAgora) == "Céu Limpo"))  {
       document.body.className = "bg-chuva-noite";
       inputTexto.classList.add('modo-escuro');
       iconeClima.src = './assets/moon.svg';
       limite = 5;
+      precipitacao(containerNuvens, 0, "chuva");
     } else if (codigoClima(climaAgora) == "Nublado") {
       document.body.className = "bg-chuva-noite";
       inputTexto.classList.add('modo-escuro');
       iconeClima.src = './assets/cloud.svg';
       limite = 12;
+      precipitacao(containerNuvens, 0, "chuva");
     } else if (codigoClima(climaAgora) == "Chovendo") {
       document.body.className = "bg-chuva-noite";
       inputTexto.classList.add('modo-escuro');
       iconeClima.src = './assets/cloud.svg';
       limite = 12;
+      precipitacao(containerNuvens, 70, "chuva");
     } else if (codigoClima(climaAgora) == "Nevando") {
       document.body.className = "bg-nevando";
       inputTexto.classList.remove('modo-escuro');
       iconeClima.src = './assets/snowflake.svg';
-      limite = 12;
+      limite = 0;
+      precipitacao(containerNuvens, 200, "flocos");
     }
 
     // geração das nuvens
-    const containerNuvens = document.getElementById('fundo-nuvens');
-    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
-      nuvem.remove();
-    });
+    
 
-    for (let i = 0; i <= limite; i++) {
+    for (let i = 1; i <= limite; i++) {
       const nuvem = document.createElement("img");
       nuvem.src = "./assets/cloud.svg";
       nuvem.alt = "";
@@ -192,4 +199,44 @@ function animarNuvens(nuvem) {
       : `${posicaoInicial}vw`
   );
   nuvem.style.setProperty("--duracao", `${duracao}s`);
+}
+
+function precipitacao(container, quantidade, tipo){
+  container.querySelectorAll(".gotas").forEach(gota => gota.remove());
+
+  for (let i = 0; i < quantidade; i++) {
+    let classe = "";
+    if (tipo == "chuva"){
+      classe = "gotas";
+    } else {
+      classe = "flocos";
+    }
+
+    const gota = document.createElement("div");
+    gota.classList.add(classe);
+    gota.style.left = `${Math.random() * 100}vw`;
+
+    if(tipo == "chuva"){
+      gota.style.top = `${Math.random() * 25}%`;
+
+      const duracao = Math.random() * 0.6 + 0.5;
+
+      gota.style.setProperty("--duracao-chuva", `${duracao}s`);
+
+      const atraso = Math.random() * -2;
+
+      gota.style.setProperty("--atraso-chuva", `${atraso}s`);
+    } else {
+      const duracao = Math.random() * 4 + 5;
+      const atraso = Math.random() * -9;
+
+      gota.style.top = `${Math.random() * 100}%`;
+
+      gota.style.setProperty("--duracao-neve", `${duracao}s`);
+      gota.style.setProperty("--atraso-neve", `${atraso}s`);
+    }
+
+    container.appendChild(gota);
+    
+  }
 }
