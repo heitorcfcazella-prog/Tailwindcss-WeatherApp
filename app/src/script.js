@@ -1,6 +1,8 @@
 /*
-criar animação de chuva e neve
- */
+atualizar para as informações atuais
+criar função para os icones
+tela de erro
+*/
 
 const iconeClima = document.getElementById("iconeClima");
 
@@ -40,7 +42,7 @@ async function buscarCidade() {
 
     console.log(`Latitude: ${latitude} e Longitude: ${longitude}`);
 
-    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&forecast_days=2`);
+    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&current=temperature_2m,relative_humidity_2m,wind_speed_10m,surface_pressure&forecast_days=2&timezone=auto`);
 
     if (!respostaClima.ok) {
       throw new Error("Erro para extrair informações do clima");
@@ -51,14 +53,14 @@ async function buscarCidade() {
 
     const climaAgora = dadosClima.daily.weather_code[0];
 
-    const agora = new Date();
-    const hora = agora.getHours();
+    const agora = dadosClima.current.time;
+    const hora = Number(agora.split("T")[1].split(":")[0]);
     //const hora = 20;
 
-    const temperaturaAgora = Math.round(dadosClima.hourly.temperature_2m[hora]);
-    const ventoAgora = Math.round(dadosClima.hourly.wind_speed_10m[hora]);
-    const umidadeAgora = dadosClima.hourly.relative_humidity_2m[hora];
-    const pressaoAgora = Math.round(dadosClima.hourly.surface_pressure[hora]);
+    const temperaturaAgora = Math.round(dadosClima.current.temperature_2m);
+    const ventoAgora = Math.round(dadosClima.current.wind_speed_10m);
+    const umidadeAgora = dadosClima.current.relative_humidity_2m;
+    const pressaoAgora = Math.round(dadosClima.current.surface_pressure);
 
     // renderização no HTML
     const inputTexto = document.getElementById("nomeCidade");
