@@ -1,6 +1,4 @@
 /*
-atualizar para as informações atuais
-criar função para os icones
 tela de erro
 */
 
@@ -18,6 +16,61 @@ function codigoClima(code) {
   }
   if ((code >= 71 && code <= 77) || code === 85 || code === 86) {
     return "Nevando";
+  }
+}
+
+function personalizacaoClima(hora, clima) {
+  if (clima === "Céu Limpo") {
+    if (hora >= 6 && hora < 18) {
+      return {
+        fundo: "bg-ensolarado-erro",
+        icone: "./assets/sun.svg",
+        modoEscuro: false,
+        limiteNuvens: 5,
+        quantidadePrecipitacao: 0,
+        tipoPrecipitacao: "chuva"
+      };
+    }
+    return {
+      fundo: "bg-chuva-noite",
+      icone: "./assets/moon.svg",
+      modoEscuro: true,
+      limiteNuvens: 5,
+      quantidadePrecipitacao: 0,
+      tipoPrecipitacao: "chuva"
+    };
+  }
+  if (clima === "Nublado") {
+    return {
+      fundo: "bg-chuva-noite",
+      icone: "./assets/cloud.svg",
+      modoEscuro: true,
+      limiteNuvens: 12,
+      quantidadePrecipitacao: 0,
+      tipoPrecipitacao: "chuva"
+    };
+  }
+
+  if (clima === "Chovendo") {
+    return {
+      fundo: "bg-chuva-noite",
+      icone: "./assets/cloud.svg",
+      modoEscuro: true,
+      limiteNuvens: 12,
+      quantidadePrecipitacao: 70,
+      tipoPrecipitacao: "chuva"
+    };
+  }
+
+  if (clima === "Nevando") {
+    return {
+      fundo: "bg-nevando",
+      icone: "./assets/snowflake.svg",
+      modoEscuro: false,
+      limiteNuvens: 0,
+      quantidadePrecipitacao: 200,
+      tipoPrecipitacao: "flocos"
+    };
   }
 }
 
@@ -42,7 +95,7 @@ async function buscarCidade() {
 
     console.log(`Latitude: ${latitude} e Longitude: ${longitude}`);
 
-    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m&current=temperature_2m,relative_humidity_2m,wind_speed_10m,surface_pressure&forecast_days=2&timezone=auto`);
+    const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,weather_code&current=temperature_2m,relative_humidity_2m,wind_speed_10m,surface_pressure&forecast_days=2&timezone=auto`);
 
     if (!respostaClima.ok) {
       throw new Error("Erro para extrair informações do clima");
@@ -70,43 +123,27 @@ async function buscarCidade() {
     containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
       nuvem.remove();
     });
-    
-    let limite = 0;
 
-    if ((hora >= 6 && hora <= 18) && (codigoClima(climaAgora) == "Céu Limpo")) {
-      document.body.className = "bg-ensolarado-erro";
-      inputTexto.classList.remove('modo-escuro');
-      iconeClima.src = './assets/sun.svg';
-      limite = 5;
-      precipitacao(containerNuvens, 0, "chuva");
-    } else if((hora <= 6 || hora >= 18) && (codigoClima(climaAgora) == "Céu Limpo"))  {
-      document.body.className = "bg-chuva-noite";
-      inputTexto.classList.add('modo-escuro');
-      iconeClima.src = './assets/moon.svg';
-      limite = 5;
-      precipitacao(containerNuvens, 0, "chuva");
-    } else if (codigoClima(climaAgora) == "Nublado") {
-      document.body.className = "bg-chuva-noite";
-      inputTexto.classList.add('modo-escuro');
-      iconeClima.src = './assets/cloud.svg';
-      limite = 12;
-      precipitacao(containerNuvens, 0, "chuva");
-    } else if (codigoClima(climaAgora) == "Chovendo") {
-      document.body.className = "bg-chuva-noite";
-      inputTexto.classList.add('modo-escuro');
-      iconeClima.src = './assets/cloud.svg';
-      limite = 12;
-      precipitacao(containerNuvens, 70, "chuva");
-    } else if (codigoClima(climaAgora) == "Nevando") {
-      document.body.className = "bg-nevando";
-      inputTexto.classList.remove('modo-escuro');
-      iconeClima.src = './assets/snowflake.svg';
-      limite = 0;
-      precipitacao(containerNuvens, 200, "flocos");
-    }
+
+    const climaVisual = personalizacaoClima(hora, codigoClima(climaAgora));
+
+    document.body.className = climaVisual.fundo;
+    iconeClima.src = climaVisual.icone;
+
+
+    inputTexto.classList.toggle("modo-escuro", climaVisual.modoEscuro);
+
+    containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
+      nuvem.remove();
+    });
+
+    precipitacao(containerNuvens, climaVisual.quantidadePrecipitacao, climaVisual.tipoPrecipitacao);
+
+    const limite = climaVisual.limiteNuvens;
+
 
     // geração das nuvens
-    
+
 
     for (let i = 1; i <= limite; i++) {
       const nuvem = document.createElement("img");
@@ -153,18 +190,14 @@ async function buscarCidade() {
         dadosClima.hourly.temperature_2m[indice]
       );
 
-      let iconeClima;
+      const climaPrevisto = codigoClima(dadosClima.hourly.weather_code[indice]);
 
-      if (indice >= 6 && indice <= 18) {
-        iconeClima = "./assets/sun.svg";
-      } else {
-        iconeClima = "./assets/moon.svg";
-      }
+      const climaVisual = personalizacaoClima(Number(dadosClima.hourly.time[indice].slice(11, 13)), climaPrevisto);
 
       return `
           <div class="mini-cards">
-            <p>${indice}:00</p>
-            <img src="${iconeClima}" alt="Ícone do período" class="img-pequena">
+            <p>${dadosClima.hourly.time[indice].slice(11, 16)}</p>
+            <img src="${climaVisual.icone}" alt="Ícone do período" class="img-pequena">
             <p>${temperatura}°C</p>
           </div>
         `;
@@ -203,12 +236,12 @@ function animarNuvens(nuvem) {
   nuvem.style.setProperty("--duracao", `${duracao}s`);
 }
 
-function precipitacao(container, quantidade, tipo){
+function precipitacao(container, quantidade, tipo) {
   container.querySelectorAll(".gotas").forEach(gota => gota.remove());
 
   for (let i = 0; i < quantidade; i++) {
     let classe = "";
-    if (tipo == "chuva"){
+    if (tipo == "chuva") {
       classe = "gotas";
     } else {
       classe = "flocos";
@@ -218,7 +251,7 @@ function precipitacao(container, quantidade, tipo){
     gota.classList.add(classe);
     gota.style.left = `${Math.random() * 100}vw`;
 
-    if(tipo == "chuva"){
+    if (tipo == "chuva") {
       gota.style.top = `${Math.random() * 25}%`;
 
       const duracao = Math.random() * 0.6 + 0.5;
@@ -239,6 +272,6 @@ function precipitacao(container, quantidade, tipo){
     }
 
     container.appendChild(gota);
-    
+
   }
 }
