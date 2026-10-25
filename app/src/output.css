@@ -171,7 +171,11 @@
     display: none !important;
   }
 }
-@layer utilities;
+@layer utilities {
+  .text-center {
+    text-align: center;
+  }
+}
 @layer base {
   body {
     min-height: 100vh;
@@ -334,8 +338,8 @@
     }
   }
   .card {
-    display: grid;
-    grid-template-rows: repeat(3, minmax(0, 1fr));
+    display: flex;
+    flex-direction: column;
     gap: calc(var(--spacing) * 6);
     border-radius: var(--radius-3xl);
     border-style: var(--tw-border-style);

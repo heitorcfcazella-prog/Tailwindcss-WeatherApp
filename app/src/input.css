@@ -138,7 +138,10 @@
   }
 
   .card {
-    @apply backdrop-blur-md bg-[#f5f5f5]/25 border border-white/30 rounded-3xl p-6 grid grid-rows-3 gap-6 shadow-xl;
+    @apply backdrop-blur-md bg-[#f5f5f5]/25
+           border border-white/30 rounded-3xl 
+           p-6 shadow-xl
+           flex flex-col gap-6;
   }
 
   .clima-atual {

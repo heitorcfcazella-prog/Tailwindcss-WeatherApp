@@ -1,8 +1,7 @@
 /*
 tela de erro
+favicon
 */
-
-const iconeClima = document.getElementById("iconeClima");
 
 function codigoClima(code) {
   if (code >= 0 && code <= 1) {
@@ -72,12 +71,25 @@ function personalizacaoClima(hora, clima) {
       tipoPrecipitacao: "flocos"
     };
   }
+  return {
+    fundo: "bg-ensolarado-erro",
+    icone: "./assets/warning.svg",
+    modoEscuro: false,
+    limiteNuvens: 0,
+    quantidadePrecipitacao: 0,
+    tipoPrecipitacao: "chuva"
+  };
 }
 
 async function buscarCidade() {
-  try {
-    const inputCidade = document.getElementById("nomeCidade").value.trim();
 
+  const inputTexto = document.getElementById("nomeCidade");
+  const iconeClima = document.getElementById("iconeClima");
+  const containerPrincipal = document.getElementById("conteudo");
+  const containerNuvens = document.getElementById('fundo-nuvens');
+
+  try {
+    const inputCidade = inputTexto.value.trim();
     const nomeCidade = inputCidade || "São Paulo";
     const cidadeFormatada = encodeURIComponent(nomeCidade);
 
@@ -89,6 +101,10 @@ async function buscarCidade() {
 
     const dadosLatLog = await respostaLatLog.json();
     console.log(dadosLatLog);
+
+    if (!dadosLatLog.results || dadosLatLog.results.length === 0) {
+      throw new Error("CIDADE_NAO_ENCONTRADA");
+    }
 
     const latitude = dadosLatLog.results[0].latitude;
     const longitude = dadosLatLog.results[0].longitude;
@@ -116,10 +132,8 @@ async function buscarCidade() {
     const pressaoAgora = Math.round(dadosClima.current.surface_pressure);
 
     // renderização no HTML
-    const inputTexto = document.getElementById("nomeCidade");
 
     // ajuste para fundo animado
-    const containerNuvens = document.getElementById('fundo-nuvens');
     containerNuvens.querySelectorAll(".nuvem").forEach((nuvem) => {
       nuvem.remove();
     });
@@ -153,8 +167,6 @@ async function buscarCidade() {
       animarNuvens(nuvem);
       containerNuvens.appendChild(nuvem);
     }
-
-    const containerPrincipal = document.getElementById("conteudo");
 
     containerPrincipal.innerHTML = `
       <div class="clima-atual">
@@ -209,7 +221,27 @@ async function buscarCidade() {
 
   } catch (erro) {
     console.error(erro);
-    return null;
+    const climaVisual = personalizacaoClima();
+
+    document.body.className = climaVisual.fundo;
+    iconeClima.src = climaVisual.icone;
+    inputTexto.classList.toggle("modo-escuro", climaVisual.modoEscuro);
+
+    containerNuvens.querySelectorAll(".nuvem, .gotas, .flocos").forEach(
+      (elemento) => elemento.remove()
+    );
+
+    let mensagem;
+
+    if (erro.message === "CIDADE_NAO_ENCONTRADA") {
+      mensagem = "Cidade não encontrada. Verifique o nome e tente novamente."
+    } else {
+      mensagem = "Não foi possível consultar o clima. Tente novamente.";
+    }
+
+    conteudo.innerHTML = `
+      <p class="texto-grande text-center">${mensagem}</p>
+    `;
   }
 }
 document.getElementById("buscarCidade").addEventListener("click", buscarCidade);
@@ -237,7 +269,7 @@ function animarNuvens(nuvem) {
 }
 
 function precipitacao(container, quantidade, tipo) {
-  container.querySelectorAll(".gotas").forEach(gota => gota.remove());
+  container.querySelectorAll(".gotas, .flocos").forEach((elemento) => elemento.remove());
 
   for (let i = 0; i < quantidade; i++) {
     let classe = "";
