@@ -85,6 +85,7 @@ async function buscarCidade() {
 
   const inputTexto = document.getElementById("nomeCidade");
   const iconeClima = document.getElementById("iconeClima");
+  const iconeFavicon = document.getElementById("iconeFavicon");
   const containerPrincipal = document.getElementById("conteudo");
   const containerNuvens = document.getElementById('fundo-nuvens');
 
@@ -143,7 +144,7 @@ async function buscarCidade() {
 
     document.body.className = climaVisual.fundo;
     iconeClima.src = climaVisual.icone;
-
+    iconeFavicon.href = climaVisual.icone;
 
     inputTexto.classList.toggle("modo-escuro", climaVisual.modoEscuro);
 
@@ -225,6 +226,7 @@ async function buscarCidade() {
 
     document.body.className = climaVisual.fundo;
     iconeClima.src = climaVisual.icone;
+    iconeFavicon.href = climaVisual.icone;
     inputTexto.classList.toggle("modo-escuro", climaVisual.modoEscuro);
 
     containerNuvens.querySelectorAll(".nuvem, .gotas, .flocos").forEach(
