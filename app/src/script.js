@@ -101,7 +101,6 @@ async function buscarCidade() {
     }
 
     const dadosLatLog = await respostaLatLog.json();
-    console.log(dadosLatLog);
 
     if (!dadosLatLog.results || dadosLatLog.results.length === 0) {
       throw new Error("CIDADE_NAO_ENCONTRADA");
@@ -110,8 +109,6 @@ async function buscarCidade() {
     const latitude = dadosLatLog.results[0].latitude;
     const longitude = dadosLatLog.results[0].longitude;
 
-    console.log(`Latitude: ${latitude} e Longitude: ${longitude}`);
-
     const respostaClima = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=weather_code&hourly=temperature_2m,relative_humidity_2m,surface_pressure,wind_speed_10m,weather_code&current=temperature_2m,relative_humidity_2m,wind_speed_10m,surface_pressure&forecast_days=2&timezone=auto`);
 
     if (!respostaClima.ok) {
@@ -119,7 +116,6 @@ async function buscarCidade() {
     }
 
     const dadosClima = await respostaClima.json();
-    console.log(dadosClima);
 
     const climaAgora = dadosClima.daily.weather_code[0];
 
