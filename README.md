@@ -55,3 +55,14 @@ npm run dev
 - Manipulação dinâmica do DOM
 - Tratamento de erros
 - Estilização com Tailwind CSS
+
+## Referencias
+
+### Telas
+- https://dribbble.com/shots/26737353-Weather-app-concept
+- https://dribbble.com/shots/7171214-Weather-App-UI
+
+### Sites dos SVG
+- SVG Repo
+- Phosphor Icons
+- Lucide.dev
